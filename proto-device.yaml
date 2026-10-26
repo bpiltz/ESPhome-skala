@@ -100,3 +100,20 @@ number:
       name: "Max Move Gate"
     max_still_distance_gate:
       name: "Max Still Gate"
+
+# Leuchtenhelligkeit: PWM -> RC-Filter -> Opamp -> 0-10 V (Dimmschnittstelle).
+# Pin 25 ist kein Strapping-Pin. Beim Reset ist der Pin hochohmig, die Hardware
+# braucht einen Pulldown, damit die Leuchte nicht flackert.
+output:
+  - platform: ledc
+    id: dim_pwm
+    pin: GPIO25
+    frequency: 19531Hz   # 80 MHz / 4096 = 12 Bit Aufloesung
+
+light:
+  - platform: monochromatic
+    name: "Light"
+    output: dim_pwm
+    gamma_correct: 1.0   # linear zur Spannung, Kennlinie legt der Treiber fest
+    default_transition_length: 0s
+    restore_mode: RESTORE_DEFAULT_OFF
