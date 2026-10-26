@@ -1,0 +1,81 @@
+esphome:
+  name: escape
+  friendly_name: Escape
+  name_add_mac_suffix: true
+  project:
+    name: "techro.escape"
+    version: "0.1.0"
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino   # bei spaeterem C2: esp-idf
+
+logger:
+  level: DEBUG
+
+# Produktionsweg: keine WLAN-Daten und kein API-Schluessel in der Firmware.
+# Muss mit escape-base.yaml uebereinstimmen, damit WLAN und Schluessel erhalten bleiben.
+api:
+
+ota:
+  - platform: esphome
+
+wifi:
+  ap: {}            # Zugangspunkt, solange kein WLAN gespeichert ist
+
+captive_portal:
+
+# Radar HLK-LD2410 (ohne BLE, ohne Lichtsensor)
+# Radar-Tx -> GPIO16 (ESP-Rx), Radar-Rx -> GPIO17 (ESP-Tx)
+uart:
+  - id: uart_radar
+    rx_pin: GPIO16
+    tx_pin: GPIO17
+    baud_rate: 256000
+    data_bits: 8
+    parity: NONE
+    stop_bits: 1
+
+ld2410:
+  uart_id: uart_radar
+
+binary_sensor:
+  - platform: ld2410
+    has_target:
+      name: "Presence"
+      device_class: occupancy
+    has_moving_target:
+      name: "Moving"
+    has_still_target:
+      name: "Still"
+  # OUT-Pin des Moduls, unabhaengig von der UART (high = Anwesenheit)
+  - platform: gpio
+    name: "Presence OUT"
+    device_class: occupancy
+    pin:
+      number: GPIO27
+      mode: INPUT_PULLDOWN
+
+sensor:
+  - platform: ld2410
+    moving_distance:
+      name: "Moving Distance"
+    still_distance:
+      name: "Still Distance"
+    detection_distance:
+      name: "Detection Distance"
+
+text_sensor:
+  - platform: ld2410
+    version:
+      name: "Radar Firmware"
+
+number:
+  - platform: ld2410
+    timeout:
+      name: "Hold Time"
+    max_move_distance_gate:
+      name: "Max Move Gate"
+    max_still_distance_gate:
+      name: "Max Still Gate"

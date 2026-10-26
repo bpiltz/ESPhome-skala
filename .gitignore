@@ -1,0 +1,10 @@
+secrets.yaml
+.esphome/
+.venv/
+
+# Herstellerunterlagen Dritter (Rechte unklar, gross)
+docs/HLK-LD2410*/
+docs/*.pdf
+
+# Interne Dokumente nur lokal
+docs/

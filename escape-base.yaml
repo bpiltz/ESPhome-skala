@@ -1,0 +1,30 @@
+# Minimal-Firmware fuer den ersten USB-Flash.
+# Name, API-Schluessel und OTA muessen mit proto-device.yaml uebereinstimmen,
+# damit die Voll-Firmware danach per OTA eingespielt werden kann.
+esphome:
+  name: escape
+  friendly_name: Escape
+  name_add_mac_suffix: true
+  project:
+    name: "techro.escape"
+    version: "0.0.1"
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+  level: DEBUG
+
+# Produktionsweg: keine WLAN-Daten und kein API-Schluessel in der Firmware.
+# WLAN kommt ueber das Captive Portal, den API-Schluessel vergibt HA bei der Anmeldung.
+api:
+
+ota:
+  - platform: esphome
+
+wifi:
+  ap: {}            # Zugangspunkt, solange kein WLAN gespeichert ist
+
+captive_portal:
