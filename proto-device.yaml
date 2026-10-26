@@ -18,8 +18,18 @@ logger:
 # Muss mit escape-base.yaml uebereinstimmen, damit WLAN und Schluessel erhalten bleiben.
 api:
 
+# Updates: Geraet holt Firmware selbst von GitHub Pages (Branch "pages").
+# HA zeigt dazu eine Update-Entity. esphome-OTA bleibt vorerst fuer den PC-Flash.
 ota:
   - platform: esphome
+  - platform: http_request
+
+http_request:
+
+update:
+  - platform: http_request
+    name: "Firmware"
+    source: https://bpiltz.github.io/ESPhome-skala/manifest.json
 
 wifi:
   ap: {}            # Zugangspunkt, solange kein WLAN gespeichert ist
