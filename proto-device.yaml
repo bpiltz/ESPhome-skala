@@ -68,6 +68,17 @@ binary_sensor:
       mode: INPUT_PULLDOWN
 
 sensor:
+  # Helligkeit: Eigenbau-Modul an GPIO34 (ADC1, nur Eingang). Rohspannung in V,
+  # Lux erst nach Eichung. Eingangsspannung am Pin maximal 3,3 V (Teiler noetig).
+  - platform: adc
+    pin: GPIO34
+    name: "Brightness Voltage"
+    attenuation: 12db
+    update_interval: 1s
+    filters:
+      - sliding_window_moving_average:
+          window_size: 10
+          send_every: 5
   - platform: ld2410
     moving_distance:
       name: "Moving Distance"
