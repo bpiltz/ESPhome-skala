@@ -1,0 +1,14 @@
+{
+  "name": "Escape",
+  "version": "0.1.0",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "ota": {
+        "md5": "ca5a23c80b31e3e38d78927edaa96609",
+        "path": "escape-0.1.0.bin",
+        "summary": "Voll-Firmware mit LD2410-Radar"
+      }
+    }
+  ]
+}
